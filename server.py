@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 # Copyright 2013 Abram Hindle
-# 
+# Copyright 2015 Jessica Yuen
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,12 +34,13 @@ app.debug = True
 #    'b':{'x':2, 'y':3}
 # }
 
+
 class World:
     def __init__(self):
         self.clear()
-        
+
     def update(self, entity, key, value):
-        entry = self.space.get(entity,dict())
+        entry = self.space.get(entity, dict())
         entry[key] = value
         self.space[entity] = entry
 
@@ -49,49 +51,58 @@ class World:
         self.space = dict()
 
     def get(self, entity):
-        return self.space.get(entity,dict())
-    
+        return self.space.get(entity, dict())
+
     def world(self):
         return self.space
 
 # you can test your webservice from the commandline
-# curl -v   -H "Content-Type: appication/json" -X PUT http://127.0.0.1:5000/entity/X -d '{"x":1,"y":1}' 
+# curl -v   -H "Content-Type: appication/json" -X PUT
+# http://127.0.0.1:5000/entity/X -d '{"x":1,"y":1}'
 
-myWorld = World()          
+myWorld = World()
 
-# I give this to you, this is how you get the raw body/data portion of a post in flask
-# this should come with flask but whatever, it's not my project.
+
+# I give this to you, this is how you get the raw body/data portion of a post
+# in flask. This should come with flask but whatever, it's not my project.
 def flask_post_json():
     '''Ah the joys of frameworks! They do so much work for you
        that they get in the way of sane operation!'''
-    if (request.json != None):
+    if request.json is not None:
         return request.json
-    elif (request.data != None and request.data != ''):
+    elif (request.data is not None and request.data != ''):
         return json.loads(request.data)
     else:
         return json.loads(request.form.keys()[0])
 
+
 @app.route("/")
 def hello():
-    '''Return something coherent here.. perhaps redirect to /static/index.html '''
+    '''Return something coherent here..
+    perhaps redirect to /static/index.html'''
     return None
 
-@app.route("/entity/<entity>", methods=['POST','PUT'])
+
+@app.route("/entity/<entity>", methods=['POST', 'PUT'])
 def update(entity):
     '''update the entities via this interface'''
     return None
 
-@app.route("/world", methods=['POST','GET'])    
+
+@app.route("/world", methods=['POST', 'GET'])
 def world():
     '''you should probably return the world here'''
     return None
 
-@app.route("/entity/<entity>")    
+
+@app.route("/entity/<entity>")
 def get_entity(entity):
-    '''This is the GET version of the entity interface, return a representation of the entity'''
+    '''This is the GET version of the entity interface, return a
+    representation of the entity'''
     return None
 
-@app.route("/clear", methods=['POST','GET'])
+
+@app.route("/clear", methods=['POST', 'GET'])
 def clear():
     '''Clear the world out!'''
     return None
